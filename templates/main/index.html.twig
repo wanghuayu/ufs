@@ -3,32 +3,36 @@
 {% block title %}User File App{% endblock %}
 
 {% block body %}
-    <div class="row">
+    <div class="card-body bg-light">
         <div class="col-10 offset-1">
-            {% for file in files %}
-                <div class="file mb-3">
-                    <div class="file-body bg-light">
-                        <div class="row">
+            <div>
+                {% for file in files %}
+                    <div class="card mb-3">
+                        <div class="card-body bg-light">
                             <form class="ui form" action="{{ path('app_delete', { 'id': file.id }) }}" method="get">
                                 <div class="row">
-                                    <div class="col-8">
-                                        <h5 class="file-title"><a href="{{ path('app_download', { 'id': file.id }) }}">{{ file.name }}</a></h5>
+                                    <div class="col-9">
+                                        <h5 class="file-title">
+                                            <a href="{{ path('app_download', { 'id': file.id }) }}">{{ file.name }}</a>
+                                        </h5>
+                                    </div>
+                                    <div >
                                         <button class="ui button" type="submit">Delete</button>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-6 text-center">
+                                    <div class="col-lg text-center">
                                         <small>Upload by</small>
                                         <br>
                                         {{ file.user.email }}
                                     </div>
-                                    <div class="col-6 text-center">
+                                    <div class="col-lg text-center">
                                         <small>Upload time</small>
                                         <br>
                                         {{ file.uploadTime | date("m/d/Y h:i") }}
                                     </div>
 
-                                    <div class="col-6 text-center">
+                                    <div class="col-lg text-center">
                                         <small>File size</small>
                                         <br>
                                         {{ file.size }}
@@ -37,10 +41,10 @@
                             </form>
                         </div>
                     </div>
-                </div>
-            {% else %}
-                <div class="text-center alert alert-primary">No file uploaded!</div>
-            {% endfor %}
+                {% else %}
+                    <div class="text-center alert alert-primary">No file uploaded!</div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

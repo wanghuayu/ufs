@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
+use http\Exception;
 use App\Entity\File;
 use App\Repository\FileRepository;
-use http\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -20,12 +20,16 @@ class FileController extends AbstractController
      * @param                $id
      * @param FileRepository $fileRepository
      *
-     * @return BinaryFileResponse|JsonResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function downloadAction($id, FileRepository $fileRepository) {
+        if(!$this->isGranted("IS_AUTHENTICATED_FULLY"))
+        {
+            return $this->redirectToRoute("app_login");
+        }
         try {
             $file = $fileRepository->findOneBy(['id'=>$id],[]);
-            //var_dump($file);
+
             if (! $file) {
                 $array = array (
                     'status' => 0,
@@ -34,6 +38,7 @@ class FileController extends AbstractController
                 $response = new JsonResponse ( $array, 200 );
                 return $response;
             }
+
             $displayName = $file->getName();
             $fileSubDirectory = $file->getUser()->getId();
             $file_with_path = "../var/uploads/".$fileSubDirectory."/".$displayName;
@@ -59,6 +64,10 @@ class FileController extends AbstractController
      */
     public function deleteAction($id, FileRepository $fileRepository): Response
     {
+        if(!$this->isGranted("IS_AUTHENTICATED_FULLY"))
+        {
+            return $this->redirectToRoute("app_login");
+        }
         try {
             $file = $fileRepository->findOneBy(['id'=>$id],[]);
             //var_dump($file);

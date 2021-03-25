@@ -27,11 +27,8 @@ class MainController extends AbstractController
             return $this->redirectToRoute("app_login");
         }
 
-        //$user = $userRepository->findOneBy(['email'=>$this->getUser()->getUsername()]);
-        //var_dump($user->getId());
-
         $files = $fileRepository->findBy(['user' => $this->getUser()], ['upload_time' => 'DESC']);
-        //var_dump($files);
+
         return $this->render('main/index.html.twig', [
             'files' => $files,
         ]);
