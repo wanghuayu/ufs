@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User File App{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-10 offset-1">
+            {% for file in files %}
+                <div class="file mb-3">
+                    <div class="file-body bg-light">
+                        <div class="row">
+                            <form class="ui form" action="{{ path('app_delete', { 'id': file.id }) }}" method="get">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <h5 class="file-title"><a href="{{ path('app_download', { 'id': file.id }) }}">{{ file.name }}</a></h5>
+                                        <button class="ui button" type="submit">Delete</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 text-center">
+                                        <small>Upload by</small>
+                                        <br>
+                                        {{ file.user.email }}
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <small>Upload time</small>
+                                        <br>
+                                        {{ file.uploadTime | date("m/d/Y h:i") }}
+                                    </div>
+
+                                    <div class="col-6 text-center">
+                                        <small>File size</small>
+                                        <br>
+                                        {{ file.size }}
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="text-center alert alert-primary">No file uploaded!</div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
